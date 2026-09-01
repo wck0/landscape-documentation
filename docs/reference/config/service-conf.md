@@ -9,7 +9,7 @@ myst:
 
 All Landscape service configurations are defined in the `service.conf` file. This file follows the `INI` file format. The default location for this file is `/etc/landscape/service.conf`. You can override that by setting the `LANDSCAPE_SERVICE_CONF` environment variable with the file path location of the `service.conf` file.
 
-Changes to the `service.conf` file only take affect once you restart the relevant service(s). Any file paths referenced throughout this document must be readable by the `landscape` system user.
+Changes to the `service.conf` file only take effect once you restart the relevant service(s). Any file paths referenced throughout this document must be readable by the `landscape` system user.
 
 Starting with Landscape 25.10, every entry in the `service.conf` file can be overridden by a corresponding environment variable. These variables have the following general structure: `LANDSCAPE_SECTION_NAME__KEY_NAME`.
 
@@ -709,6 +709,10 @@ The `[pingserver]` section contains configurations for the `pingserver` service 
 ## The `[schema]` section
 
 The `[schema]` section contains configurations for updating the database schema. In addition to the following, this section can use the {ref}`shared service settings <shared-service-settings>` and the {ref}`shared store settings <shared-store-settings>`.
+
+```{note}
+When `sslcert`, `sslkey`, `sslrootcert`, or `sslmode` are set in the `[schema]` section, they apply **only** to superuser database connections and do not override the corresponding values in the `[stores]` section. The `[stores]` ssl settings apply to regular `landscape` user connections, while the `[schema]` ssl settings apply to `landscape_superuser` (or `landscape_maintenance`) connections. This separation is required for PostgreSQL certificate authentication, where the certificate CN must match the connecting username.
+```
 
 ### `store_superuser`
 
